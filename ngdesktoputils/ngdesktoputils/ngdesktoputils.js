@@ -49,7 +49,6 @@ angular.module('ngdesktoputils',['servoy'])
 				    throw error;
 				  }
 				  defer.resolve(stdout);
-				  window.console.log(stdout);
 				});
 				return defer.promise;
 			}
