@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: ngdesktoputils
+Bundle-Name: NGDesktop Utils
+Bundle-Version: 1.0.0
+Package-Type: Web-Service
+
+Name: ngdesktoputils/ngdesktoputils.spec
+Web-Service: True
+
