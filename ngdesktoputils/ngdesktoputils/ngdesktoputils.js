@@ -1,7 +1,7 @@
 angular.module('ngdesktoputils',['servoy'])
 .factory("ngdesktoputils",function($services, $q) 
 {
-	var scope = $services.getServiceScope('ngdesktoputils');
+	//var scope = $services.getServiceScope('ngdesktoputils');
 	var electron = null;
 	var childProcess = null;
 	if (typeof require == "function") {

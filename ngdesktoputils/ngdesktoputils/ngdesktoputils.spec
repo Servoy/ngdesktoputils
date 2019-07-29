@@ -1,6 +1,6 @@
 {
 	"name": "ngdesktoputils",
-	"displayName": "ngdesktoputils",
+	"displayName": "NGDesktop Utils",
 	"version": 1,
  	"definition": "ngdesktoputils/ngdesktoputils/ngdesktoputils.js",
 	"libraries": [],
