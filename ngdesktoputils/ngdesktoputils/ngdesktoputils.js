@@ -1,5 +1,5 @@
-angular.module('ngdesktoputils',['servoy'])
-.factory("ngdesktoputils",function($services, $q) 
+angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
+.factory("ngdesktoputils",function($services, $q,ngdesktopfile) 
 {
 	//var scope = $services.getServiceScope('ngdesktoputils');
 	var electron = null;
@@ -24,17 +24,21 @@ angular.module('ngdesktoputils',['servoy'])
 			 * Be sure you will call this and after this call application.exit() to close also the client directly itself.
 			 */
 			exit: function() {
-				electron.remote.app.exit();
+				ngdesktopfile.waitForDefered(function() {
+					electron.remote.app.exit();
+				})
 			},
 			/**
 			 * Executes a command async, the server side call will not block on this call.
 			 */
 			executeCommand: function(program,args) {
-				const child = childProcess.exec(makeProgramString(program,args), null, function(error, stdout, stderr) {
-				  if (error) {
-				    throw error;
-				  }
-				});
+				ngdesktopfile.waitForDefered(function() {
+					const child = childProcess.exec(makeProgramString(program,args), null, function(error, stdout, stderr) {
+					  if (error) {
+					    throw error;
+					  }
+					});
+				})
 			},
 			/**
 			 * This executes a command and returns the result of the stdout 
@@ -43,13 +47,15 @@ angular.module('ngdesktoputils',['servoy'])
 			 */
 			executeCommandSync: function(program,args) {
 				const defer = $q.defer();
-				const child = childProcess.exec(makeProgramString(program,args), null, function(error, stdout, stderr) {
-				  if (error) {
-					defer.reject(stderr);
-				    throw error;
-				  }
-				  defer.resolve(stdout);
-				});
+				ngdesktopfile.waitForDefered(function() {
+					const child = childProcess.exec(makeProgramString(program,args), null, function(error, stdout, stderr) {
+					  if (error) {
+						defer.reject(stderr);
+					    throw error;
+					  }
+					  defer.resolve(stdout);
+					});
+				})
 				return defer.promise;
 			}
 		}
