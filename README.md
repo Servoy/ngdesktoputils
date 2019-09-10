@@ -7,7 +7,7 @@ The 'ngdesktoputils' module is depending on [ngdesktopfile](https://github.com/S
 
 Getting started
 -------------
-To use the latest source code clone the git repository and checkout the develop branch. Install the egit plugin for Eclipse to clone the repository and import the projects into the workspace.
+To use the latest source code clone the git repository and checkout the master branch. Install the egit plugin for Eclipse to clone the repository and import the projects into the workspace.
 
 
 Feature Requests & Bugs
