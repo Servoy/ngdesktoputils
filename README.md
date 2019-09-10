@@ -12,7 +12,7 @@ To use the latest source code clone the git repository and checkout the master b
 
 Feature Requests & Bugs
 -----------------------
-Found a bug or would like to see a new feature implemented? Raise an issue in the [Issue Tracker](https://github.com/Servoy/svyUtils/issues)
+Found a bug or would like to see a new feature implemented? Raise an issue in the [Issue Tracker](https://github.com/Servoy/ngdesktoputils/issues)
 
 
 Contributing
