@@ -1,0 +1,15 @@
+{
+    "name": "ngdesktoputils",
+    "displayName": "NG-Desktop Utils plug-in",
+    "packageType": "Web-Service",
+    "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/File_alt_font_awesome.svg/512px-File_alt_font_awesome.svg.png",
+    "description": "Webservice for utilities methods in NGDesktop client",
+    "wikiUrl": "https://github.com/Servoy/ngdesktoputils/wiki",
+    "sourceUrl": "https://github.com/Servoy/ngdesktoputils",
+    "releases": [{
+        "version": "1.0.0-rc1",
+        "url": "https://github.com/Servoy/ngdesktopfile/releases/download/1.0.0-rc1/ngdesktoputils.zip",
+        "servoy-version":"2019.9",
+		"dependency":"ngdesktopfile#>=1.0.0-rc1"
+    }]
+}
