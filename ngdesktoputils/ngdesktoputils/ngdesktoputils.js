@@ -57,6 +57,23 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 					});
 				})
 				return defer.promise;
+			},
+			/**
+			 * Set clipboard text. 
+			 *
+			 * @param {string} text to be set in clipboard
+			 */
+			setClipboardContent: function(text)
+			{
+			     electron.clipboard.writeText(text);
+			},
+			
+			/**
+			 * Get clipboard text. 
+			 */
+			getClipboardContent: function()
+			{
+			     return electron.clipboard.readText();
 			}
 		}
 	}
@@ -64,7 +81,9 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 		return {
 			exit: function() {console.log("not in electron");},
 			executeCommand: function(program,args) {console.log("not in electron");},
-			executeCommandSync: function(program,args) {console.log("not in electron");}
+			executeCommandSync: function(program,args) {console.log("not in electron");},
+			setClipboardContent : function() {console.log("not in electron");},
+			getClipboardContent : function() {console.log("not in electron");}
 		}
 	}
 })

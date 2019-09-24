@@ -21,6 +21,12 @@
 				{"name":"args", "type":"object[]"}
 			],
 			"returns":"string"
+		},
+		"setClipboardContent": {
+			"parameters": [{ "name": "text", "type": "string" }]
+		},
+		"getClipboardContent": {
+			"returns":"string"
 		}
  	}
 }
