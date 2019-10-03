@@ -27,6 +27,9 @@
 		},
 		"getClipboardContent": {
 			"returns":"string"
+		},
+		"isNGDesktop": {
+			"returns":"boolean"
 		}
  	}
 }

@@ -74,6 +74,14 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 			getClipboardContent: function()
 			{
 			     return electron.clipboard.readText();
+			},
+			
+			/**
+			 * Whether application is running as NGDesktop. 
+			 */
+			isNGDesktop: function()
+			{
+			     return true;
 			}
 		}
 	}
@@ -83,7 +91,8 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 			executeCommand: function(program,args) {console.log("not in electron");},
 			executeCommandSync: function(program,args) {console.log("not in electron");},
 			setClipboardContent : function() {console.log("not in electron");},
-			getClipboardContent : function() {console.log("not in electron");}
+			getClipboardContent : function() {console.log("not in electron");},
+			isNGDesktop : function() {return false;}
 		}
 	}
 })
