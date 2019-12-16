@@ -9,6 +9,10 @@ Getting started
 -------------
 To use the latest source code clone the git repository and checkout the master branch. Install the egit plugin for Eclipse to clone the repository and import the projects into the workspace.
 
+Documentation
+-------------
+See the [Wiki](https://github.com/Servoy/ngdesktoputils/wiki) for the available documentation.
+
 
 Feature Requests & Bugs
 -----------------------
