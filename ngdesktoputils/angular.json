@@ -1,0 +1,51 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "c73821cc-c3cd-481c-a275-0657b4a6c943"
+  },
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "@servoy/ngdesktoputils": {
+      "projectType": "library",
+      "root": "projects/ngdesktoputils",
+      "sourceRoot": "projects/ngdesktoputils/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/ngdesktoputils/tsconfig.lib.json",
+            "project": "projects/ngdesktoputils/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngdesktoputils/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngdesktoputils/src/test.ts",
+            "tsConfig": "projects/ngdesktoputils/tsconfig.spec.json",
+            "karmaConfig": "projects/ngdesktoputils/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngdesktoputils/tsconfig.lib.json",
+              "projects/ngdesktoputils/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "@servoy/ngdesktoputils"
+}

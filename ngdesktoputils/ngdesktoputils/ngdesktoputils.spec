@@ -4,6 +4,10 @@
 	"version": 1,
  	"definition": "ngdesktoputils/ngdesktoputils/ngdesktoputils.js",
 	"libraries": [],
+	"ng2Config": {
+       "packageName": "@servoy/ngdesktoputils",
+       "serviceName": "NGDesktopUtilsService"
+    },
  	"api":
  	{
 	   	"exit": 
