@@ -4,6 +4,6 @@ var AdmZip = require('adm-zip');
 var zip = new AdmZip();
 
 zip.addLocalFolder("./META-INF/", "/META-INF/");
-zip.addLocalFolder("./dist/servoy/ngdesktoputils/", "/dist/");
+zip.addLocalFolder("./dist/servoy/ngdesktoputils/", "/dist/servoy/ngdesktoputils/");
 zip.addLocalFolder("./ngdesktoputils/", "/ngdesktoputils/");
 zip.writeZip("ngdesktoputils.zip");

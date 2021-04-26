@@ -6,7 +6,8 @@
 	"libraries": [],
 	"ng2Config": {
        "packageName": "@servoy/ngdesktoputils",
-       "serviceName": "NGDesktopUtilsService"
+       "serviceName": "NGDesktopUtilsService",
+       "entryPoint": "dist/servoy/ngdesktoputils"
     },
  	"api":
  	{
