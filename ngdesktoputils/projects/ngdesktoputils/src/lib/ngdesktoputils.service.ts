@@ -7,7 +7,9 @@ import { LoggerFactory, LoggerService } from '@servoy/public';
 import * as child_process from 'node:child_process';
 import * as electron from 'electron';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NGDesktopUtilsService {
 
     private log: LoggerService;
