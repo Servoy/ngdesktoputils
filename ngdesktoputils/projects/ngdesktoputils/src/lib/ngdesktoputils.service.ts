@@ -4,7 +4,7 @@ import { Deferred, WindowRefService } from '@servoy/public';
 
 import { LoggerFactory, LoggerService } from '@servoy/public';
 
-import * as child_process from 'node:child_process';
+import * as child_process from 'child_process';
 import * as electron from 'electron';
 
 @Injectable()
