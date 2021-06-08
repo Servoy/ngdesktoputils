@@ -11,5 +11,11 @@
         "url": "https://github.com/Servoy/ngdesktoputils/releases/download/v1.1/ngdesktoputils.zip",
         "servoy-version":"2019.12",
 		"dependency":"ngdesktopfile#>=1.1"
+    },
+    {
+        "version": "2.0",
+        "url": "https://github.com/Servoy/ngdesktoputils/releases/download/v2.0/ngdesktoputils.zip",
+        "servoy-version":"2019.12",
+		"dependency":"ngdesktopfile#>=2.0"
     }]
 }
