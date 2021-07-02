@@ -13,7 +13,8 @@ export class NGDesktopUtilsService {
     private log: LoggerService;
     private electron: typeof electron;
     private childProcess: typeof child_process;
-
+    private printer: any;
+    
     constructor(private ngdesktopfile: NGDesktopFileService,
         windowRef: WindowRefService, logFactory: LoggerFactory) {
         this.log = logFactory.getLogger('NGDesktopUtilsService');
@@ -22,6 +23,7 @@ export class NGDesktopUtilsService {
         if (userAgent.indexOf(' electron/') > -1 && r) {
             this.electron = r('electron');
             this.childProcess = r('child_process');
+            this.printer = r('pdf-to-printer');
         } else {
             this.log.warn('ngdesktopuils service/plugin loaded in a none electron environment');
         }
@@ -91,6 +93,18 @@ export class NGDesktopUtilsService {
      */
     isNGDesktop() {
         return this.electron !== null && this.electron !== undefined;;
+    }
+
+    printPDF(path, options) {
+        this.printer.print(path, options);
+    }
+
+    getPrinters() {
+        return this.printer.getPrinters();
+    }
+
+    getDefaultPrinter() {
+        return this.printer.getDefaultPrinter();
     }
 
     private makeProgramString(program, args) {

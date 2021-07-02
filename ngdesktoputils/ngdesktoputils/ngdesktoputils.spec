@@ -35,6 +35,29 @@
 		},
 		"isNGDesktop": {
 			"returns":"boolean"
-		}
- 	}
+		},
+		"printPDF": {
+            "parameters" : [
+                {"name":"path", "type":"string"},
+                {"name":"options ", "type":"printoptions", "optional":true}
+            ]
+        },
+        "getPrinters": {
+            "returns":"printer[]"
+        },
+        "getDefaultPrinter": {
+            "returns":"printer"
+        }
+ 	},
+ 	"types": {
+        "printer": {
+            "deviceId": { "type": "string" },
+            "name": { "type": "string" }
+        },
+        "printoptions": {
+            "printer": { "type": "string" },
+            "unix": { "type": "string[]" },
+            "win32": { "type": "string[]" }
+        }
+    }
 }

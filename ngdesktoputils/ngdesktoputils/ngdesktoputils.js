@@ -4,9 +4,11 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 	//var scope = $services.getServiceScope('ngdesktoputils');
 	var electron = null;
 	var childProcess = null;
+    var printer = null;
 	if (typeof require == "function") {
 		electron = require('electron');
 		childProcess = require('child_process');
+        printer = require('pdf-to-printer');
 	}
 	if (electron) {
 		function makeProgramString(program,args) {
@@ -82,7 +84,31 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 			isNGDesktop: function()
 			{
 			     return true;
-			}
+			},
+            
+             /**
+             * Prints a pdf document specified by path. Optionally, specify printer or unix print options (lp command) or windows print options(SumatraPDF). 
+             */
+            printPDF : function(path, options) 
+            {
+               printer.print(path, options);
+            },
+            
+            /**
+             * Returns installed printers on local machine.
+             */
+            getPrinters : function() 
+            {
+                return printer.getPrinters();
+            },
+            
+            /**
+             * Returns default printer on local machine.
+             */
+            getDefaultPrinter : function() 
+            {
+               return printer.getDefaultPrinter();
+            }
 		}
 	}
 	else {
@@ -92,7 +118,10 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 			executeCommandSync: function(program,args) {console.log("not in electron");},
 			setClipboardContent : function() {console.log("not in electron");},
 			getClipboardContent : function() {console.log("not in electron");},
-			isNGDesktop : function() {return false;}
+			isNGDesktop : function() {return false;},
+            printPDF : function() {console.log("not in electron");},
+            getPrinters : function() {console.log("not in electron");},
+            getDefaultPrinter : function() {console.log("not in electron");}
 		}
 	}
 })
