@@ -5,8 +5,10 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 	var electron = null;
 	var childProcess = null;
     var printer = null;
+    var remote = null;
 	if (typeof require == "function") {
 		electron = require('electron');
+        remote = require('@electron/remote');
 		childProcess = require('child_process');
         printer = require('pdf-to-printer');
 	}
@@ -27,7 +29,7 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 			 */
 			exit: function() {
 				ngdesktopfile.waitForDefered(function() {
-					electron.remote.app.exit();
+					remote.app.exit();
 				})
 			},
 			/**
