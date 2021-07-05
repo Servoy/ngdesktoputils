@@ -14,6 +14,7 @@ export class NGDesktopUtilsService {
     private electron: typeof electron;
     private childProcess: typeof child_process;
     private printer: any;
+    private remote: typeof electron.remote;;
     
     constructor(private ngdesktopfile: NGDesktopFileService,
         windowRef: WindowRefService, logFactory: LoggerFactory) {
@@ -22,6 +23,7 @@ export class NGDesktopUtilsService {
         const r = windowRef.nativeWindow['require'];
         if (userAgent.indexOf(' electron/') > -1 && r) {
             this.electron = r('electron');
+            this.remote = r('@electron/remote');
             this.childProcess = r('child_process');
             this.printer = r('pdf-to-printer');
         } else {
@@ -35,7 +37,7 @@ export class NGDesktopUtilsService {
      */
     exit() {
         this.ngdesktopfile.waitForDefered(() => {
-            this.electron.remote.app.exit();
+            this.remote.app.exit();
         });
     }
 
