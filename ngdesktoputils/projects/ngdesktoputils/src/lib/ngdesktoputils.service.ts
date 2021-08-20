@@ -15,7 +15,7 @@ export class NGDesktopUtilsService {
     private childProcess: typeof child_process;
     private printer: any;
     private remote: typeof electron.remote;;
-    
+
     constructor(private ngdesktopfile: NGDesktopFileService,
         windowRef: WindowRefService, logFactory: LoggerFactory) {
         this.log = logFactory.getLogger('NGDesktopUtilsService');
@@ -44,9 +44,9 @@ export class NGDesktopUtilsService {
     /**
      * Executes a command async, the server side call will not block on this call.
      */
-    executeCommand(program, args) {
+    executeCommand(program: string, args) {
         this.ngdesktopfile.waitForDefered(() => {
-            const child = this.childProcess.exec(this.makeProgramString(program, args), null, (error, stdout, stderr) => {
+            this.childProcess.exec(this.makeProgramString(program, args), null, (error) => {
                 if (error) {
                     throw error;
                 }
@@ -59,10 +59,10 @@ export class NGDesktopUtilsService {
      * This will also call reject when a error happens so the call will error out. (will not return correct)
      * Try to use the async executeCommand so nothing will be blocking.
      */
-    executeCommandSync(program, args) {
+    executeCommandSync(program: string, args) {
         const defer = new Deferred<any>();
         this.ngdesktopfile.waitForDefered(() => {
-            const child = this.childProcess.exec(this.makeProgramString(program, args), null, (error, stdout, stderr) => {
+            this.childProcess.exec(this.makeProgramString(program, args), null, (error, stdout, stderr) => {
                 if (error) {
                     defer.reject(stderr);
                     throw error;
@@ -78,7 +78,7 @@ export class NGDesktopUtilsService {
      *
      * @param text to be set in clipboard
      */
-    setClipboardContent(text) {
+    setClipboardContent(text: string) {
         this.electron.clipboard.writeText(text);
     }
 
@@ -97,7 +97,7 @@ export class NGDesktopUtilsService {
         return this.electron !== null && this.electron !== undefined;;
     }
 
-    printPDF(path, options) {
+    printPDF(path: string, options) {
         this.printer.print(path, options);
     }
 
@@ -109,11 +109,11 @@ export class NGDesktopUtilsService {
         return this.printer.getDefaultPrinter();
     }
 
-    private makeProgramString(program, args) {
+    private makeProgramString(program: string, args: Array<string>) {
         if (program.indexOf(' ') >= 0) program = '"' + program + '"';
         if (args) {
-            for (let i = 0; i < args.length; i++) {
-                program += ' ' + args[i];
+            for (const arg  of args) {
+                program += ' ' + arg;
             }
         }
         return program;
