@@ -31,18 +31,6 @@
             "tsConfig": "projects/ngdesktoputils/tsconfig.spec.json",
             "karmaConfig": "projects/ngdesktoputils/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/ngdesktoputils/tsconfig.lib.json",
-              "projects/ngdesktoputils/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     }
