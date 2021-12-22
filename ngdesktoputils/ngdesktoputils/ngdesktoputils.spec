@@ -47,7 +47,12 @@
         },
         "getDefaultPrinter": {
             "returns":"printer"
-        }
+        },
+		"showExternal": {
+			"parameters": [
+				{"name":"url", "type":"string"}
+			]
+		}
  	},
  	"types": {
         "printer": {

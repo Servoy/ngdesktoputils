@@ -14,7 +14,8 @@ export class NGDesktopUtilsService {
     private electron: typeof electron;
     private childProcess: typeof child_process;
     private printer: any;
-    private remote: typeof electron.remote;;
+    private remote: typeof electron.remote;
+    private shell: electron.Shell;
 
     constructor(private ngdesktopfile: NGDesktopFileService,
         windowRef: WindowRefService, logFactory: LoggerFactory) {
@@ -26,6 +27,7 @@ export class NGDesktopUtilsService {
             this.remote = r('@electron/remote');
             this.childProcess = r('child_process');
             this.printer = r('pdf-to-printer');
+            this.shell = r('electron').shell;
         } else {
             this.log.warn('ngdesktopuils service/plugin loaded in a none electron environment');
         }
@@ -107,6 +109,10 @@ export class NGDesktopUtilsService {
 
     getDefaultPrinter() {
         return this.printer.getDefaultPrinter();
+    }
+
+    showExternal(url: string) {
+        this.shell.openExternal(url);
     }
 
     private makeProgramString(program: string, args: Array<string>) {

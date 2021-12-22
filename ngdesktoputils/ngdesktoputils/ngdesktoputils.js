@@ -6,11 +6,13 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 	var childProcess = null;
     var printer = null;
     var remote = null;
+	var shell = null;
 	if (typeof require == "function") {
 		electron = require('electron');
         remote = require('@electron/remote');
 		childProcess = require('child_process');
         printer = require('pdf-to-printer');
+		shell = require('electron').shell;
 	}
 	if (electron) {
 		function makeProgramString(program,args) {
@@ -110,7 +112,18 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
             getDefaultPrinter : function() 
             {
                return printer.getDefaultPrinter();
-            }
+            },
+
+			/**
+			 * OManage URLs using their default applications
+			 * 
+			 * @param {String} url 
+			 */
+			showExternal : function(url)
+			{
+				shell.openExternal(url);
+				
+			}
 		}
 	}
 	else {
@@ -123,7 +136,8 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 			isNGDesktop : function() {return false;},
             printPDF : function() {console.log("not in electron");},
             getPrinters : function() {console.log("not in electron");},
-            getDefaultPrinter : function() {console.log("not in electron");}
+            getDefaultPrinter : function() {console.log("not in electron");},
+			showExternal : function() {console.log("not in electron");}
 		}
 	}
 })
