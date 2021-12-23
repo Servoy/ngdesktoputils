@@ -111,6 +111,9 @@ export class NGDesktopUtilsService {
         return this.printer.getDefaultPrinter();
     }
 
+    /**
+	 * Manage URLs using their default applications
+	 */
     showExternal(url: string) {
         this.shell.openExternal(url);
     }

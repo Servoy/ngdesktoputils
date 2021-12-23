@@ -115,7 +115,7 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
             },
 
 			/**
-			 * OManage URLs using their default applications
+			 * Manage URLs using their default applications
 			 * 
 			 * @param {String} url 
 			 */
