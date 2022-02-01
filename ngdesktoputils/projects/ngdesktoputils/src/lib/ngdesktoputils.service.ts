@@ -16,6 +16,7 @@ export class NGDesktopUtilsService {
     private printer: any;
     private remote: typeof electron.remote;
     private shell: electron.Shell;
+    private ipcRenderer: typeof electron.ipcRenderer;
 
     constructor(private ngdesktopfile: NGDesktopFileService,
         windowRef: WindowRefService, logFactory: LoggerFactory) {
@@ -28,6 +29,7 @@ export class NGDesktopUtilsService {
             this.childProcess = r('child_process');
             this.printer = r('pdf-to-printer');
             this.shell = r('electron').shell;
+            this.ipcRenderer = r('electron').ipcRenderer;
         } else {
             this.log.warn('ngdesktopuils service/plugin loaded in a none electron environment');
         }
@@ -117,6 +119,33 @@ export class NGDesktopUtilsService {
     showExternal(url: string) {
         this.shell.openExternal(url);
     }
+
+    /**
+	 * Retrieve information from the ngdesktop client
+	 * 
+	 * @returns a list with client's system information:
+	 * 
+	 * 		ngDesktopVersion	- string: ngdesktop version
+	 * 		osPlatform			- string: can be 'darwin', 'linux', 'freebsd', 'openbsd' and 'win32'
+	 * 		osRelease,			- string: kernel release number
+	 * 		osTotalMem			- long: total system's memory
+	 * 		osFreeMem			- long: total available memory
+	 */
+	getSystemInformation() 
+	{
+		const defer = new Deferred<any>();
+		this.ngdesktopfile.waitForDefered(() => {
+		try {
+				this.ipcRenderer.on('get-info-response', function(event, data) {
+					defer.resolve(data);
+				});
+				this.ipcRenderer.send('get-info', null);
+			} catch (e) {
+				defer.resolve(null);
+			}
+		});
+		return defer.promise;
+	}
 
     private makeProgramString(program: string, args: Array<string>) {
         if (program.indexOf(' ') >= 0) program = '"' + program + '"';

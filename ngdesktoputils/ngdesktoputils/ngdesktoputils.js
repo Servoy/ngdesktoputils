@@ -7,8 +7,10 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
     var printer = null;
     var remote = null;
 	var shell = null;
+	var ipcRenderer = null;
 	if (typeof require == "function") {
 		electron = require('electron');
+		ipcRenderer = require('electron').ipcRenderer;
         remote = require('@electron/remote');
 		childProcess = require('child_process');
         printer = require('pdf-to-printer');
@@ -123,6 +125,33 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 			{
 				shell.openExternal(url);
 				
+			},
+
+			/**
+			 * Retrieve information from the ngdesktop client
+			 * 
+			 * @returns a list with client's system information:
+			 * 
+			 * 		ngDesktopVersion	- string: ngdesktop version
+			 * 		osPlatform			- string: can be 'darwin', 'linux', 'freebsd', 'openbsd' and 'win32'
+			 * 		osRelease,			- string: kernel release number
+			 * 		osTotalMem			- long: total system's memory
+			 * 		osFreeMem			- long: total available memory
+			 */
+			getSystemInformation: function() 
+			{
+				const defer = $q.defer();
+				ngdesktopfile.waitForDefered(function() {
+					try {
+						ipcRenderer.on('get-info-response', function(event, data) {
+							defer.resolve(data);
+						});
+						ipcRenderer.send('get-info', null);
+					} catch (e) {
+						defer.resolve(null);
+					}
+				});
+				return defer.promise;
 			}
 		}
 	}
@@ -137,7 +166,8 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
             printPDF : function() {console.log("not in electron");},
             getPrinters : function() {console.log("not in electron");},
             getDefaultPrinter : function() {console.log("not in electron");},
-			showExternal : function() {console.log("not in electron");}
+			showExternal : function() {console.log("not in electron");},
+			getSystemInformation : function() {console.log("not in electron");}
 		}
 	}
 })

@@ -52,9 +52,21 @@
 			"parameters": [
 				{"name":"url", "type":"string"}
 			]
+		},
+		"getSystemInformation": {
+			"returns":"sysinfo"
 		}
  	},
  	"types": {
+		"sysinfo": {
+			"ngDesktopVersion": { "type": "string" },
+			"osPlatform": { "type": "string" },
+			"osRelease": { "type": "string" },
+			"osTotalMem": { "type": "long" },
+			"osFreeMem": { "type": "long" },
+			
+			
+		},
         "printer": {
             "deviceId": { "type": "string" },
             "name": { "type": "string" }
