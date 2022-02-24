@@ -63,9 +63,7 @@
 			"osPlatform": { "type": "string" },
 			"osRelease": { "type": "string" },
 			"osTotalMem": { "type": "long" },
-			"osFreeMem": { "type": "long" },
-			
-			
+			"osFreeMem": { "type": "long" }	
 		},
         "printer": {
             "deviceId": { "type": "string" },
