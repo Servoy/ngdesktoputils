@@ -4,19 +4,33 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 	//var scope = $services.getServiceScope('ngdesktoputils');
 	var electron = null;
 	var childProcess = null;
-    var printer = null;
+	var printer = null;
     var remote = null;
 	var shell = null;
 	var ipcRenderer = null;
+	var os = null;
 	if (typeof require == "function") {
 		electron = require('electron');
 		ipcRenderer = require('electron').ipcRenderer;
         remote = require('@electron/remote');
 		childProcess = require('child_process');
-        printer = require('pdf-to-printer');
+		os = require('os');
+		if (os.platform() === 'win32' ) {
+		 	printer = require('pdf-to-printer');
+		} else {
+			printer = require('unix-print');
+		}
 		shell = require('electron').shell;
 	}
 	if (electron) {
+		function waitForDefered(func) {
+			if (defer != null) {
+				return defer.promise.then(function(){
+					return waitForDefered(func); //avoid multiple calls to the same defer to be executed cncurently
+				})
+			}
+			else func();
+		}
 		function makeProgramString(program,args) {
 			if (program.indexOf(" ") >= 0) program = "\"" + program + "\"";
 			if (args) {
@@ -27,6 +41,9 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 			return program; 
 		}
 		return {
+			waitForDefered: function(func) {
+				waitForDefered(func);
+			},
 			/**
 			 * This will close the NGDesktop main application.
 			 * Be sure you will call this and after this call application.exit() to close also the client directly itself.
@@ -113,9 +130,18 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
              */
             getDefaultPrinter : function() 
             {
-               return printer.getDefaultPrinter();
+            	const printerDefer = $q.defer();
+               	printer.getDefaultPrinter().then(function(printer) {
+               		if (os.platform() === 'win32') {
+               			printerDefer.resolve(printer);
+               		} else {
+               			printerDefer.resolve({ "deviceId": printer.printer, "name": printer.description});
+               		}
+               	}).catch(function(err) {
+               		printerDefer.resolve(null);
+               	});
+				return printerDefer.promise;
             },
-
 			/**
 			 * Manage URLs using their default applications
 			 * 
