@@ -9,6 +9,7 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 	var shell = null;
 	var ipcRenderer = null;
 	var os = null;
+	var defer = null;
 	if (typeof require == "function") {
 		electron = require('electron');
 		ipcRenderer = require('electron').ipcRenderer;
@@ -122,24 +123,44 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
              */
             getPrinters : function() 
             {
-                return printer.getPrinters();
+				const printerDefer = $q.defer();
+				waitForDefered(function() {
+					printer.getPrinters().then(function(printers) {
+						if (os.platform() === 'win32') {
+							printerDefer.resolve(printers);
+						} else {
+							var printerList = [];
+							printers.forEach(function(printer) {
+								console.log(printer);
+								printerList.push({"deviceId": printer.printer, "name": printer.description});
+							});
+							printerDefer.resolve(printerList);
+						}
+					}).catch(function(err) {
+						console.log(err);
+						printerDefer.resolve([]);
+					});
+				});
+				return printerDefer.promise;
             },
-            
             /**
              * Returns default printer on local machine.
              */
             getDefaultPrinter : function() 
             {
             	const printerDefer = $q.defer();
-               	printer.getDefaultPrinter().then(function(printer) {
-               		if (os.platform() === 'win32') {
-               			printerDefer.resolve(printer);
-               		} else {
-               			printerDefer.resolve({ "deviceId": printer.printer, "name": printer.description});
-               		}
-               	}).catch(function(err) {
-               		printerDefer.resolve(null);
-               	});
+				waitForDefered(function() {
+					printer.getDefaultPrinter().then(function(printer) {
+						if (os.platform() === 'win32') {
+							printerDefer.resolve(printer);
+						} else {
+							printerDefer.resolve({ "deviceId": printer.printer, "name": printer.description});
+						}
+					}).catch(function(err) {
+						consolelog(err);
+						printerDefer.resolve(null);
+					});
+				});
 				return printerDefer.promise;
             },
 			/**
