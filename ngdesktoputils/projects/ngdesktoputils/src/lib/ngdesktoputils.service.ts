@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { NGDesktopFileService } from '@servoy/ngdesktopfile';
-import { Deferred, WindowRefService } from '@servoy/public';
-
-import { LoggerFactory, LoggerService } from '@servoy/public';
+import { LoggerFactory, LoggerService, Deferred, WindowRefService } from '@servoy/public';
 
 import * as child_process from 'child_process';
+import * as os from 'os';
 import * as electron from 'electron';
 
 @Injectable()
 export class NGDesktopUtilsService {
 
+    private defer: Deferred<any>;
     private log: LoggerService;
+    private os: typeof os;
     private electron: typeof electron;
     private childProcess: typeof child_process;
     private printer: any;
@@ -24,10 +25,15 @@ export class NGDesktopUtilsService {
         const userAgent = navigator.userAgent.toLowerCase();
         const r = windowRef.nativeWindow['require'];
         if (userAgent.indexOf(' electron/') > -1 && r) {
+            this.os = r('os');
             this.electron = r('electron');
             this.remote = r('@electron/remote');
             this.childProcess = r('child_process');
-            this.printer = r('pdf-to-printer');
+             if (this.os.platform() === 'win32' ) {
+                 this.printer = r('pdf-to-printer');
+            } else {
+               this.printer = r('unix-print');
+            }
             this.shell = r('electron').shell;
             this.ipcRenderer = r('electron').ipcRenderer;
         } else {
@@ -105,12 +111,50 @@ export class NGDesktopUtilsService {
         this.printer.print(path, options);
     }
 
+    /**
+     * Returns installed printers on local machine.
+     */
     getPrinters() {
-        return this.printer.getPrinters();
+        const platform = this.os.platform();
+        const printerDefer = new Deferred();
+		this.ngdesktopfile.waitForDefered(() => {
+			this.printer.getPrinters().then(function(printers) {
+				if (platform === 'win32') {
+					printerDefer.resolve(printers);
+				} else {
+					let printerList = [];
+					printers.forEach(function(printer) {
+						printerList.push({"deviceId": printer.printer, "name": printer.description});
+					});
+					printerDefer.resolve(printerList);
+				}
+			}).catch(function(err) {
+				console.log(err);
+				printerDefer.resolve([]);
+			});
+		});
+		return printerDefer.promise;
     }
 
+    /**
+     * Returns default printer on local machine.
+     */
     getDefaultPrinter() {
-        return this.printer.getDefaultPrinter();
+        const platform = this.os.platform();
+        const printerDefer = new Deferred();
+		this.ngdesktopfile.waitForDefered(() => {
+			this.printer.getDefaultPrinter().then(function(printer) {
+				if (platform === 'win32') {
+					printerDefer.resolve(printer);
+				} else {
+					printerDefer.resolve({ "deviceId": printer.printer, "name": printer.description});
+				}
+			}).catch(function(err) {
+				console.log(err);
+			    printerDefer.resolve(null);
+			});
+		});
+		return printerDefer.promise;
     }
 
     /**

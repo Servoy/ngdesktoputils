@@ -131,7 +131,6 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 						} else {
 							var printerList = [];
 							printers.forEach(function(printer) {
-								console.log(printer);
 								printerList.push({"deviceId": printer.printer, "name": printer.description});
 							});
 							printerDefer.resolve(printerList);
