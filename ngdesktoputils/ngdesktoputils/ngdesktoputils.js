@@ -9,7 +9,6 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 	var shell = null;
 	var ipcRenderer = null;
 	var os = null;
-	var defer = null;
 	if (typeof require == "function") {
 		electron = require('electron');
 		ipcRenderer = require('electron').ipcRenderer;
@@ -24,14 +23,6 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 		shell = require('electron').shell;
 	}
 	if (electron) {
-		function waitForDefered(func) {
-			if (defer != null) {
-				return defer.promise.then(function(){
-					return waitForDefered(func); //avoid multiple calls to the same defer to be executed cncurently
-				})
-			}
-			else func();
-		}
 		function makeProgramString(program,args) {
 			if (program.indexOf(" ") >= 0) program = "\"" + program + "\"";
 			if (args) {
@@ -42,9 +33,6 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
 			return program; 
 		}
 		return {
-			waitForDefered: function(func) {
-				waitForDefered(func);
-			},
 			/**
 			 * This will close the NGDesktop main application.
 			 * Be sure you will call this and after this call application.exit() to close also the client directly itself.
@@ -124,21 +112,19 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
             getPrinters : function() 
             {
 				const printerDefer = $q.defer();
-				waitForDefered(function() {
-					printer.getPrinters().then(function(printers) {
-						if (os.platform() === 'win32') {
-							printerDefer.resolve(printers);
-						} else {
-							var printerList = [];
-							printers.forEach(function(printer) {
-								printerList.push({"deviceId": printer.printer, "name": printer.description});
-							});
-							printerDefer.resolve(printerList);
-						}
-					}).catch(function(err) {
-						console.log(err);
-						printerDefer.resolve([]);
-					});
+				printer.getPrinters().then(function(printers) {
+					if (os.platform() === 'win32') {
+						printerDefer.resolve(printers);
+					} else {
+						var printerList = [];
+						printers.forEach(function(printer) {
+							printerList.push({"deviceId": printer.printer, "name": printer.description});
+						});
+						printerDefer.resolve(printerList);
+					}
+				}).catch(function(err) {
+					console.log(err);
+					printerDefer.resolve([]);
 				});
 				return printerDefer.promise;
             },
@@ -148,17 +134,15 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
             getDefaultPrinter : function() 
             {
             	const printerDefer = $q.defer();
-				waitForDefered(function() {
-					printer.getDefaultPrinter().then(function(printer) {
-						if (os.platform() === 'win32') {
-							printerDefer.resolve(printer);
-						} else {
-							printerDefer.resolve({ "deviceId": printer.printer, "name": printer.description});
-						}
-					}).catch(function(err) {
-						consolelog(err);
-						printerDefer.resolve(null);
-					});
+				printer.getDefaultPrinter().then(function(printer) {
+					if (os.platform() === 'win32') {
+						printerDefer.resolve(printer);
+					} else {
+						printerDefer.resolve({ "deviceId": printer.printer, "name": printer.description});
+					}
+				}).catch(function(err) {
+					consolelog(err);
+					printerDefer.resolve(null);
 				});
 				return printerDefer.promise;
             },

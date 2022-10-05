@@ -9,7 +9,6 @@ import * as electron from 'electron';
 @Injectable()
 export class NGDesktopUtilsService {
 
-    private defer: Deferred<any>;
     private log: LoggerService;
     private os: typeof os;
     private electron: typeof electron;
@@ -117,21 +116,19 @@ export class NGDesktopUtilsService {
     getPrinters() {
         const platform = this.os.platform();
         const printerDefer = new Deferred();
-		this.ngdesktopfile.waitForDefered(() => {
-			this.printer.getPrinters().then(function(printers) {
-				if (platform === 'win32') {
-					printerDefer.resolve(printers);
-				} else {
-					let printerList = [];
-					printers.forEach(function(printer) {
-						printerList.push({"deviceId": printer.printer, "name": printer.description});
-					});
-					printerDefer.resolve(printerList);
-				}
-			}).catch(function(err) {
-				console.log(err);
-				printerDefer.resolve([]);
-			});
+		this.printer.getPrinters().then(function(printers) {
+			if (platform === 'win32') {
+				printerDefer.resolve(printers);
+			} else {
+				let printerList = [];
+				printers.forEach(function(printer) {
+					printerList.push({"deviceId": printer.printer, "name": printer.description});
+				});
+				printerDefer.resolve(printerList);
+			}
+		}).catch(function(err) {
+			console.log(err);
+			printerDefer.resolve([]);
 		});
 		return printerDefer.promise;
     }
@@ -142,17 +139,15 @@ export class NGDesktopUtilsService {
     getDefaultPrinter() {
         const platform = this.os.platform();
         const printerDefer = new Deferred();
-		this.ngdesktopfile.waitForDefered(() => {
-			this.printer.getDefaultPrinter().then(function(printer) {
-				if (platform === 'win32') {
-					printerDefer.resolve(printer);
-				} else {
-					printerDefer.resolve({ "deviceId": printer.printer, "name": printer.description});
-				}
-			}).catch(function(err) {
-				console.log(err);
-			    printerDefer.resolve(null);
-			});
+		this.printer.getDefaultPrinter().then(function(printer) {
+			if (platform === 'win32') {
+				printerDefer.resolve(printer);
+			} else {
+				printerDefer.resolve({ "deviceId": printer.printer, "name": printer.description});
+			}
+		}).catch(function(err) {
+			console.log(err);
+		    printerDefer.resolve(null);
 		});
 		return printerDefer.promise;
     }
