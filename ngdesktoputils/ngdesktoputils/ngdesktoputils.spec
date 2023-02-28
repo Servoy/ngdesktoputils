@@ -59,6 +59,7 @@
  	},
  	"types": {
 		"sysinfo": {
+            "electronVersion": { "type": "string" },
 			"ngDesktopVersion": { "type": "string" },
 			"osPlatform": { "type": "string" },
 			"osRelease": { "type": "string" },
