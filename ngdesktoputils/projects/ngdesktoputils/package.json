@@ -1,6 +1,6 @@
 {
   "name": "@servoy/ngdesktoputils",
-  "version": "2022.12.1",
+  "version": "2023.03.1",
   "peerDependencies": {
     "@angular/common": "^14",
     "@angular/core": "^14",
