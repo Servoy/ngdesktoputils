@@ -3,9 +3,6 @@
  * Be sure you will call this and after this call application.exit() to close also the client directly itself.
  */
 function exit() {
-	ngdesktopfile.waitForDefered(function() {
-		remote.app.exit();
-	})
 }
 /**
  * Executes a command async, the server side call will not block on this call.
