@@ -3,6 +3,7 @@
 	"displayName": "NGDesktop Utils",
 	"version": 1,
  	"definition": "ngdesktoputils/ngdesktoputils/ngdesktoputils.js",
+ 	"doc": "ngdesktoputils/ngdesktoputils/ngdesktoputils_doc.js",
 	"libraries": [],
 	"ng2Config": {
        "packageName": "@servoy/ngdesktoputils",
