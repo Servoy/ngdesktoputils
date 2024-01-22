@@ -4,7 +4,7 @@
     "packageType": "Web-Service",
     "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/File_alt_font_awesome.svg/512px-File_alt_font_awesome.svg.png",
     "invertIcon": true,
-    "description": "Webservice for utilities methods in NGDesktop client",
+    "description": "Provides a web-service with utility methods that give access to general purpose native calls in NGDesktop clients.",
     "wikiUrl": "https://github.com/Servoy/ngdesktoputils/wiki",
     "sourceUrl": "https://github.com/Servoy/ngdesktoputils",
     "releases": [
