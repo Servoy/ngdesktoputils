@@ -41,7 +41,7 @@ function isNGDesktop()
 }
 
  /**
- * Prints a pdf document specified by path. Optionally, specify printer or unix print options (lp command) or windows print options(SumatraPDF). 
+ * Prints a pdf document specified by path. Optionally, specify printer or unix print options (lp command) or windows print options see: https://github.com/Servoy/pdf-to-printer
  */
 function printPDF (path, options) 
 {
