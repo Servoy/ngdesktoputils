@@ -29,7 +29,7 @@ export class NGDesktopUtilsService {
             this.remote = r('@electron/remote');
             this.childProcess = r('child_process');
              if (this.os.platform() === 'win32' ) {
-                 this.printer = r('pdf-to-printer');
+                 this.printer = r('@servoy/pdf-to-printer');
             } else {
                this.printer = r('unix-print');
             }
@@ -107,7 +107,9 @@ export class NGDesktopUtilsService {
     }
 
     printPDF(path: string, options) {
-        this.printer.print(path, options);
+        this.printer.print(path, options).catch(err => {
+            console.log(err);
+        });
     }
 
     /**
@@ -116,17 +118,17 @@ export class NGDesktopUtilsService {
     getPrinters() {
         const platform = this.os.platform();
         const printerDefer = new Deferred();
-		this.printer.getPrinters().then(function(printers) {
+		this.printer.getPrinters().then(printers => {
 			if (platform === 'win32') {
 				printerDefer.resolve(printers);
 			} else {
-				let printerList = [];
-				printers.forEach(function(printer) {
-					printerList.push({"deviceId": printer.printer, "name": printer.description});
+				const printerList = [];
+				printers.forEach(printer => {
+					printerList.push({deviceId: printer.printer, name: printer.description});
 				});
 				printerDefer.resolve(printerList);
 			}
-		}).catch(function(err) {
+		}).catch(err => {
 			console.log(err);
 			printerDefer.resolve([]);
 		});
@@ -139,13 +141,13 @@ export class NGDesktopUtilsService {
     getDefaultPrinter() {
         const platform = this.os.platform();
         const printerDefer = new Deferred();
-		this.printer.getDefaultPrinter().then(function(printer) {
+		this.printer.getDefaultPrinter().then(printer => {
 			if (platform === 'win32') {
 				printerDefer.resolve(printer);
 			} else {
-				printerDefer.resolve({ "deviceId": printer.printer, "name": printer.description});
+				printerDefer.resolve({ deviceId: printer.printer, name: printer.description});
 			}
-		}).catch(function(err) {
+		}).catch(err => {
 			console.log(err);
 		    printerDefer.resolve(null);
 		});
@@ -175,7 +177,7 @@ export class NGDesktopUtilsService {
 		const defer = new Deferred<any>();
 		this.ngdesktopfile.waitForDefered(() => {
 		try {
-				this.ipcRenderer.on('get-info-response', function(event, data) {
+				this.ipcRenderer.on('get-info-response', (_event, data)  => {
 					defer.resolve(data);
 				});
 				this.ipcRenderer.send('get-info', null);
