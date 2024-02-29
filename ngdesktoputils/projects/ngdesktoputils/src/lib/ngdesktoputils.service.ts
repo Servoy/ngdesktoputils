@@ -32,7 +32,6 @@ export class NGDesktopUtilsService {
                 try {
                     this.printer = r('@servoy/pdf-to-printer');
                 } catch (error) {
-                    console.error('Error loading module "@servoy/pdf-to-printer". Loading fallback module...');
                     this.printer = r('pdf-to-printer');
                 }
             } else {

@@ -19,7 +19,6 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
             try {
                 printer = require('@servoy/pdf-to-printer');
             } catch (error) {
-                console.error('Error loading module "@servoy/pdf-to-printer". Loading fallback module...');
                 printer = require('pdf-to-printer');
             }
         } else {
