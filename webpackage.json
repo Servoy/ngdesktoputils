@@ -67,6 +67,12 @@
         "url": "https://github.com/Servoy/ngdesktoputils/releases/download/v2023.3.1/ngdesktoputils.zip",
         "servoy-version":"2023.3",
 	"dependency":"ngdesktopfile#>=2023.3.1"
+      },
+      {
+        "version": "2024.3.0",
+        "url": "https://github.com/Servoy/ngdesktoputils/releases/download/v2024.3.0/ngdesktoputils.zip",
+        "servoy-version":"2023.12",
+	"dependency":"ngdesktopfile#>=2024.3.0"
       }
     ]
 }
