@@ -28,10 +28,15 @@ export class NGDesktopUtilsService {
             this.electron = r('electron');
             this.remote = r('@electron/remote');
             this.childProcess = r('child_process');
-             if (this.os.platform() === 'win32' ) {
-                 this.printer = r('@servoy/pdf-to-printer');
+            if (this.os.platform() === 'win32') {
+                try {
+                    this.printer = r('@servoy/pdf-to-printer');
+                } catch (error) {
+                    console.error('Error loading module "@servoy/pdf-to-printer". Loading fallback module...');
+                    this.printer = r('pdf-to-printer');
+                }
             } else {
-               this.printer = r('unix-print');
+                this.printer = r('unix-print');
             }
             this.shell = r('electron').shell;
             this.ipcRenderer = r('electron').ipcRenderer;

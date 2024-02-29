@@ -70,7 +70,7 @@
         "printer": {
             "deviceId": { "type": "string" },
             "name": { "type": "string" },
-            "paperSizes": { "type": "string[]" },
+            "paperSizes": { "type": "string[]" }
         },
         "printoptions": {
             "printer": { "type": "string" },

@@ -15,11 +15,16 @@ angular.module('ngdesktoputils',['servoy','ngdesktopfile'])
         remote = require('@electron/remote');
 		childProcess = require('child_process');
 		os = require('os');
-		if (os.platform() === 'win32' ) {
-		 	printer = require('pdf-to-printer');
-		} else {
-			printer = require('unix-print');
-		}
+		if (os.platform() === 'win32') {
+            try {
+                printer = require('@servoy/pdf-to-printer');
+            } catch (error) {
+                console.error('Error loading module "@servoy/pdf-to-printer". Loading fallback module...');
+                printer = require('pdf-to-printer');
+            }
+        } else {
+            printer = require('unix-print');
+        }
 		shell = require('electron').shell;
 	}
 	if (electron) {
