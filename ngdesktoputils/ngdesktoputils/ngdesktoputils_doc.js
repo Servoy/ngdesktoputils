@@ -71,13 +71,13 @@ function showExternal (url)
 /**
  * Retrieve information from the ngdesktop client
  * 
- * @returns a list with client's system information:
+ * @return an object containing the client's system information:
  * 
- * 		ngDesktopVersion	- string: ngdesktop version
- * 		osPlatform			- string: can be 'darwin', 'linux', 'freebsd', 'openbsd' and 'win32'
- * 		osRelease,			- string: kernel release number
- * 		osTotalMem			- long: total system's memory
- * 		osFreeMem			- long: total available memory
+ *     ngDesktopVersion    - string: ngdesktop version
+ *     osPlatform          - string: can be 'darwin', 'linux', 'freebsd', 'openbsd' and 'win32'
+ *     osRelease           - string: kernel release number
+ *     osTotalMem          - long: total system's memory
+ *     osFreeMem           - long: total available memory
  */
 function getSystemInformation() 
 {
