@@ -40,7 +40,7 @@
 		"printPDF": {
             "parameters" : [
                 {"name":"path", "type":"string"},
-                {"name":"options ", "type":"printoptions", "optional":true}
+                {"name":"options", "type":"printoptions", "optional":true}
             ]
         },
         "getPrinters": {
