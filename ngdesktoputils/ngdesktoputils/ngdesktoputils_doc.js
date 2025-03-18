@@ -82,3 +82,43 @@ function showExternal (url)
 function getSystemInformation() 
 {
 }
+
+
+var svy_types = {
+
+    sysinfo: {
+
+        electronVersion : null,
+
+        ngDesktopVersion : null,
+
+        osPlatform : null,
+
+        osRelease : null,
+
+        osTotalMem : null,
+
+        osFreeMem : null,
+
+    },
+
+    printer: {
+
+        deviceId : null,
+
+        name : null,
+
+        paperSizes : null,
+
+    },
+
+    printoptions: {
+
+        printer : null,
+
+        unix : null,
+
+        win32 : null,
+
+    }
+}
