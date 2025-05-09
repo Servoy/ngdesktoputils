@@ -2,9 +2,9 @@
   "name": "@servoy/ngdesktoputils",
   "version": "2025.3.0",
   "peerDependencies": {
-    "@angular/common": "^17",
-    "@angular/core": "^17",
-    "@servoy/ngdesktopfile": "^2024.3.0"
+    "@angular/common": "^19",
+    "@angular/core": "^19",
+    "@servoy/ngdesktopfile": "^2025.3.0"
   },
   "dependencies": {
     "tslib": "*"
