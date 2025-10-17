@@ -1,3 +1,11 @@
+/*
+ * A service that allows interaction with the native environment when running inside an NGDesktop client.
+ * You can execute commands, exit, work with the clipboard, printers, check if you are inside an NGDesktop client or inside a normal browser
+ * and so on.
+ * 
+ * This will not work when running inside a normal browser (except for isNGDesktop()).
+ */
+
 /**
  * This will close the NGDesktop main application.
  * Be sure you will call this and after this call application.exit() to close also the client directly itself.
