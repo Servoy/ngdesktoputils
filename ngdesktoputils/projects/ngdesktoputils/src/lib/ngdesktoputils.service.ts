@@ -6,23 +6,23 @@ import * as child_process from 'child_process';
 import * as os from 'os';
 import * as electron from 'electron';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class NGDesktopUtilsService {
 
     private log: LoggerService;
-    private os: typeof os;
-    private electron: typeof electron;
-    private childProcess: typeof child_process;
+    private os!: typeof os;
+    private electron!: typeof electron;
+    private childProcess!: typeof child_process;
     private printer: any;
-    private remote: typeof electron.remote;
-    private shell: electron.Shell;
-    private ipcRenderer: typeof electron.ipcRenderer;
+    private remote!: typeof electron.remote;
+    private shell!: electron.Shell;
+    private ipcRenderer!: typeof electron.ipcRenderer;
 
     constructor(private ngdesktopfile: NGDesktopFileService,
         windowRef: WindowRefService, logFactory: LoggerFactory) {
         this.log = logFactory.getLogger('NGDesktopUtilsService');
         const userAgent = navigator.userAgent.toLowerCase();
-        const r = windowRef.nativeWindow['require'];
+        const r = (windowRef.nativeWindow as any)['require'];
         if (userAgent.indexOf(' electron/') > -1 && r) {
             this.os = r('os');
             this.electron = r('electron');
@@ -31,7 +31,7 @@ export class NGDesktopUtilsService {
             if (this.os.platform() === 'win32') {
                 try {
                     this.printer = r('@servoy/pdf-to-printer');
-                } catch (error) {
+                } catch (_error) {
                     this.printer = r('pdf-to-printer');
                 }
             } else {
@@ -57,7 +57,7 @@ export class NGDesktopUtilsService {
     /**
      * Executes a command async, the server side call will not block on this call.
      */
-    executeCommand(program: string, args) {
+    executeCommand(program: string, args: any) {
         this.ngdesktopfile.waitForDefered(() => {
             this.childProcess.exec(this.makeProgramString(program, args), null, (error) => {
                 if (error) {
@@ -72,7 +72,7 @@ export class NGDesktopUtilsService {
      * This will also call reject when a error happens so the call will error out. (will not return correct)
      * Try to use the async executeCommand so nothing will be blocking.
      */
-    executeCommandSync(program: string, args) {
+    executeCommandSync(program: string, args: any) {
         const defer = new Deferred<any>();
         this.ngdesktopfile.waitForDefered(() => {
             this.childProcess.exec(this.makeProgramString(program, args), null, (error, stdout, stderr) => {
@@ -110,8 +110,8 @@ export class NGDesktopUtilsService {
         return this.electron !== null && this.electron !== undefined;;
     }
 
-    printPDF(path: string, options) {
-        this.printer.print(path, options).catch(err => {
+    printPDF(path: string, options: any) {
+        this.printer.print(path, options).catch((err: any) => {
             console.log(err);
         });
     }
@@ -122,17 +122,17 @@ export class NGDesktopUtilsService {
     getPrinters() {
         const platform = this.os.platform();
         const printerDefer = new Deferred();
-		this.printer.getPrinters().then(printers => {
+		this.printer.getPrinters().then((printers: any) => {
 			if (platform === 'win32') {
 				printerDefer.resolve(printers);
 			} else {
-				const printerList = [];
-				printers.forEach(printer => {
+				const printerList: any[] = [];
+				printers.forEach((printer: any) => {
 					printerList.push({deviceId: printer.printer, name: printer.description});
 				});
 				printerDefer.resolve(printerList);
 			}
-		}).catch(err => {
+		}).catch((err: any) => {
 			console.log(err);
 			printerDefer.resolve([]);
 		});
@@ -145,13 +145,13 @@ export class NGDesktopUtilsService {
     getDefaultPrinter() {
         const platform = this.os.platform();
         const printerDefer = new Deferred();
-		this.printer.getDefaultPrinter().then(printer => {
+		this.printer.getDefaultPrinter().then((printer: any) => {
 			if (platform === 'win32') {
 				printerDefer.resolve(printer);
 			} else {
 				printerDefer.resolve({ deviceId: printer.printer, name: printer.description});
 			}
-		}).catch(err => {
+		}).catch((err: any) => {
 			console.log(err);
 		    printerDefer.resolve(null);
 		});
@@ -176,8 +176,7 @@ export class NGDesktopUtilsService {
 	 * 		osTotalMem			- long: total system's memory
 	 * 		osFreeMem			- long: total available memory
 	 */
-	getSystemInformation() 
-	{
+	getSystemInformation() {
 		const defer = new Deferred<any>();
 		this.ngdesktopfile.waitForDefered(() => {
 		try {
@@ -185,14 +184,14 @@ export class NGDesktopUtilsService {
 					defer.resolve(data);
 				});
 				this.ipcRenderer.send('get-info', null);
-			} catch (e) {
+			} catch (_e) {
 				defer.resolve(null);
 			}
 		});
 		return defer.promise;
 	}
 
-    private makeProgramString(program: string, args: Array<string>) {
+    private makeProgramString(program: string, args: string[]) {
         if (program.indexOf(' ') >= 0) program = '"' + program + '"';
         if (args) {
             for (const arg  of args) {
